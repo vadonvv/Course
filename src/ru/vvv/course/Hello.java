@@ -14,10 +14,12 @@ public class Hello {
         int tmp =0;
         int k = 0;
         do{
-            if(k%2==1)
-                arr[k]*=tmp;
-            else
-                tmp=arr[k];
+            if(k%2==1) {
+                arr[k] *= tmp;
+            }
+            else {
+                tmp = arr[k];
+            }
             k++;
         }while(k<arr.length);
         printArr(arr);
@@ -42,7 +44,7 @@ public class Hello {
         return arr;
     }
 
-    private  static void printArr(int arr[]){
+    private  static void printArr(int[] arr){
         for (int k:arr
         ) {
             System.out.print(k + " ");
