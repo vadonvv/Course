@@ -10,5 +10,8 @@ public class Hello {
 
         Task4.run(10);
         System.out.println();
+
+        Task5.run(9);
+        System.out.println();
     }
 }
