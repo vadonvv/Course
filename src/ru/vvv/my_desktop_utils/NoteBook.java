@@ -1,4 +1,4 @@
-package ru.vvv.myDesktopUtils;
+package ru.vvv.my_desktop_utils;
 
 public class NoteBook extends DesktopItem {
     private boolean hardCover;
@@ -26,8 +26,16 @@ public class NoteBook extends DesktopItem {
     }
 
     @Override
+    public NoteBook clone() {
+        NoteBook clone = (NoteBook) super.clone();
+        clone.hardCover = this.hardCover;
+        clone.pages = this.pages;
+        return clone;
+    }
+
+    @Override
     public String toString() {
-        return "NoteBook [cost=" + cost + ", pages=" + pages
+        return this.getName() + " [cost=" + this.getCost() + ", hardCover=" + hardCover + ", pages=" + pages
                 + "]";
     }
 }

@@ -1,12 +1,23 @@
-package ru.vvv.myDesktopUtils;
+package ru.vvv.my_desktop_utils;
 
-public class DesktopItem {
-    int cost;
-    String name;
+public class DesktopItem implements Cloneable{
+    private int cost;
+    private String name;
 
     public DesktopItem(String name, int cost) {
         this.cost = cost;
         this.name = name;
+    }
+    @Override
+    public DesktopItem clone() {
+        try {
+            DesktopItem clone = (DesktopItem) super.clone();
+            clone.cost = this.cost;
+            clone.name = this.name;
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            return new DesktopItem("Some Error",0);
+        }
     }
 
     public int getCost() {

@@ -1,13 +1,9 @@
-package ru.vvv.myDesktopUtils;
+package ru.vvv.my_desktop_utils;
 
 
 public class Pen extends DesktopItem {
     private int thickness;
 
-    public Pen() {
-        super("Pen",10);
-        this.thickness = 1;
-    }
     /**
      * Конструктор - создание новой ручки.
      *
@@ -29,8 +25,15 @@ public class Pen extends DesktopItem {
     }
 
     @Override
+    public Pen clone() {
+        Pen clone = (Pen) super.clone();
+        clone.thickness = this.thickness;
+        return clone;
+    }
+
+    @Override
     public String toString() {
-        return "Pen [cost=" + cost + ", thickness=" + thickness
+        return this.getName() + " [cost=" + this.getCost() + ", thickness=" + thickness
                 + "]";
     }
 }
