@@ -1,5 +1,8 @@
 package ru.vvv.my_desktop_utils;
 
+import java.util.Arrays;
+import static ru.vvv.my_desktop_utils.DesktopItemComparator.*;
+
 public class Desktop implements Cloneable{
     private String employeeName;
     /**
@@ -12,32 +15,19 @@ public class Desktop implements Cloneable{
      */
     private static int listSize = 100;
 
-    /**
-     * Количество канцелярии на столе
-     */
-    private int recordCount;
-
-    /**
-     * Текущая величина массива(под который выделена память)
-     */
-    private int maxSize;
-
     public Desktop(String emp) {
         employeeName = emp;
-        maxSize = listSize;
-        recordCount = 0;
-        this.items = new DesktopItem[maxSize];
+        this.items = new DesktopItem[listSize];
+
     }
 
     @Override
     public Desktop clone() {
         try {
             Desktop clone = (Desktop) super.clone();
-            clone.maxSize = this.maxSize;
-            clone.recordCount = this.recordCount;
-            clone.items = new DesktopItem[maxSize];
+            clone.items = new DesktopItem[this.items.length];
             clone.employeeName = this.employeeName;
-            for (int i = 0; i < recordCount; i++) {
+            for (int i = 0; i<items.length && items[i] != null; i++) {
                 clone.items[i] = this.items[i].clone();
             }
             return clone;
@@ -55,54 +45,59 @@ public class Desktop implements Cloneable{
     }
 
     public void addItem(DesktopItem item) {
-        if (recordCount == maxSize) {
-            this.extendArray();
-        }
-        items[recordCount] = item;
-        recordCount++;
-    }
-
-    private void extendArray() {
-        DesktopItem[] tmpList = new DesktopItem[maxSize + listSize];
-        for (int i = 0; i < maxSize; i++) {
-            tmpList[i] = items[i];
-        }
-        this.items = tmpList;
-        maxSize += listSize;
-    }
-
-    public void removeItem(DesktopItem item) {
-        int deleteItem = recordCount;
-        for (int i = 0; i < recordCount; i++) {
-            if(items[i].equals(item)){
-                deleteItem = i;
+        boolean flag = false;
+        for (int i = 0; i<items.length; i++){
+            if(items[i] == null) {
+                items[i] = item;
+                flag = true;
                 break;
             }
         }
-        for (int i = deleteItem; i < recordCount-1; i++) {
+        if (!flag){ //Array full
+            int index = this.items.length;
+            this.extendArray();
+            items[index] = item;
+        }
+    }
+
+    private void extendArray() {
+        this.items = Arrays.copyOf(this.items,this.items.length + listSize);
+    }
+
+    public void removeItem(DesktopItem item) {
+        int deleteItemIndex;
+        deleteItemIndex = items.length; //Чтобы не удалить первый элемент если в массиве не найдется переданного
+
+        for (int i = 0; i<items.length && items[i] != null; i++) {
+            if(items[i].equals(item)){
+                deleteItemIndex = i;
+                break;
+            }
+        }
+
+        for (int i = deleteItemIndex; i<items.length-1 && items[i] != null; i++) {
             items[i] = items[i+1];
         }
-        recordCount--;
     }
     @Override
     public String toString(){
         String out = "Desktop items of employee " + employeeName + ":\n";
-        for (int i = 0; i < recordCount; i++) {
-            out += items[i].toString();
+        for (int i = 0; i<items.length && items[i] != null; i++) {
+            out += items[i].toString() + "\n";
         }
-        out += "Полная стоимость канцтоваров: " + calcDeskCost();
+        out += "Полная стоимость канцтоваров: " + calcDeskCost() + "\n";
         return out;
     }
 
     public int calcDeskCost(){
         int sum = 0;
-        for (int i = 0; i < recordCount; i++) {
+        for (int i = 0; i<items.length && items[i] != null; i++) {
             sum += items[i].getCost();
         }
         return sum;
     }
 
-    public void sort(){
-
+    public void sort(final DesktopItemComparator... multipleOptions){
+        Arrays.sort(items,getComparator(multipleOptions));
     }
 }

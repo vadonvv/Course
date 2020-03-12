@@ -1,4 +1,5 @@
 package ru.vvv.my_desktop_utils;
+import static ru.vvv.my_desktop_utils.DesktopItemComparator.*;
 
 public class Worker {
     public static void main(String[] args) {
@@ -21,6 +22,22 @@ public class Worker {
         sdesk.setEmployeeName("Sidorov");
         sdesk.addItem(new Pen(100,10));
         // Сидорову добавили ручку, а у Иванова с того же шаблона она не появилась.
+        System.out.println(idesk.toString());
+
+        //сортировка Иванова
+        idesk.addItem(new Pen(150,13));
+        idesk.addItem(new NoteBook(150, false,10));
+        idesk.addItem(new Pen(48,20));
+        idesk.addItem(new Pencil(11,10));
+        idesk.addItem(new NoteBook(10, true,10));
+
+        idesk.sort(COST_SORT);
+        System.out.println(idesk.toString());
+
+        idesk.sort(NAME_SORT);
+        System.out.println(idesk.toString());
+
+        idesk.sort(COST_SORT,NAME_SORT);
         System.out.println(idesk.toString());
     }
 }
