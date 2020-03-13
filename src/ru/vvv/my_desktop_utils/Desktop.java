@@ -32,7 +32,7 @@ public class Desktop implements Cloneable{
             }
             return clone;
         } catch (CloneNotSupportedException e) {
-            return new Desktop("Some Error");
+            throw new RuntimeException();
         }
     }
 
@@ -45,19 +45,15 @@ public class Desktop implements Cloneable{
     }
 
     public void addItem(DesktopItem item) {
-        boolean flag = false;
         for (int i = 0; i<items.length; i++){
             if(items[i] == null) {
                 items[i] = item;
-                flag = true;
-                break;
+                return;
             }
         }
-        if (!flag){ //Array full
-            int index = this.items.length;
-            this.extendArray();
-            items[index] = item;
-        }
+        int index = this.items.length;
+        this.extendArray();
+        items[index] = item;
     }
 
     private void extendArray() {
@@ -65,28 +61,27 @@ public class Desktop implements Cloneable{
     }
 
     public void removeItem(DesktopItem item) {
-        int deleteItemIndex;
-        deleteItemIndex = items.length; //Чтобы не удалить первый элемент если в массиве не найдется переданного
-
         for (int i = 0; i<items.length && items[i] != null; i++) {
             if(items[i].equals(item)){
-                deleteItemIndex = i;
+                shiftItemsFromIndex(i);
                 break;
             }
         }
+    }
 
-        for (int i = deleteItemIndex; i<items.length-1 && items[i] != null; i++) {
+    private void shiftItemsFromIndex(int index){
+        for (int i = index; i<items.length-1 && items[i] != null; i++) {
             items[i] = items[i+1];
         }
     }
     @Override
     public String toString(){
-        String out = "Desktop items of employee " + employeeName + ":\n";
+        StringBuilder out = new StringBuilder("Desktop items of employee " + employeeName + ":\n");
         for (int i = 0; i<items.length && items[i] != null; i++) {
-            out += items[i].toString() + "\n";
+            out.append(items[i].toString()).append("\n");
         }
-        out += "Полная стоимость канцтоваров: " + calcDeskCost() + "\n";
-        return out;
+        out.append("Полная стоимость канцтоваров: ").append(calcDeskCost()).append("\n");
+        return out.toString();
     }
 
     public int calcDeskCost(){
