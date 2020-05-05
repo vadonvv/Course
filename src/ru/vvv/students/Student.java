@@ -18,8 +18,10 @@ public class Student {
     }
 
     public void addToGroup(StudentGroup gr){
-        gr.addStudent(this);
-        this.groups.add(gr);
+        if(!groups.contains(gr)) {
+            this.groups.add(gr);
+            gr.addStudent(this);
+        }
     }
 
     public void leaveGroup(StudentGroup gr){
@@ -29,15 +31,16 @@ public class Student {
     }
 
     public void listGroups(){
-        System.out.println("Предменты, изучаемые студентом " + this.getName() + ":");
         String score;
+        StringBuilder result = new StringBuilder();
+        result.append("Предменты, изучаемые студентом ");
+        result.append(this.getName());
+        result.append(":\n");
         for (StudentGroup k:groups) {
-            if(k.getStudentscore(this)!=null){
-                score = k.getStudentscore(this).toString();
-            }else {
-                score = "нет оценки";
-            }
-            System.out.println("    " + k.getSubject().getName() + "; score: " + score);
+            result.append("\t").append(k.getName()).append("; Оценки: ");
+            result.append(k.printStudentScore(this));
+            result.append("\n");
         }
+        System.out.println(result);
     }
 }

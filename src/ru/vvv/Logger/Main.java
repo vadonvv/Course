@@ -6,6 +6,6 @@ public class Main {
         crazyLogger.log("sdfsfsfsdf");
         crazyLogger.log("test2");
         crazyLogger.printLog();
-        crazyLogger.findMatches("es");
+        System.out.println(crazyLogger.findMatches("es"));
     }
 }

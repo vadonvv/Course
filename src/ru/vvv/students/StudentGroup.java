@@ -1,29 +1,26 @@
 package ru.vvv.students;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class StudentGroup<T> {
-private Subject subject;
-private Map<Student,T> students;
+private String name;
+private Map<Student, List<T>> students;
 
-    public StudentGroup(Subject subject) {
-        this.subject = subject;
+    public StudentGroup(String subject) {
+        name = subject;
         this.students = new HashMap();
     }
 
-    public Subject getSubject() {
-        return subject;
-    }
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public String getName() {
+        return name;
     }
 
     public void addStudent(Student student){
-        this.students.put(student,null);
+        if(!this.students.containsKey(student)){
+            this.students.put(student,new ArrayList<T>());
+            student.addToGroup(this);
+        }
+
     }
 
     public void removeStudent(Student student){
@@ -33,22 +30,25 @@ private Map<Student,T> students;
         }
     }
 
-    public void setScore(Student student,T score){
-        students.put(student, score);
-//        if(this.students.containsKey(student)) {
-//            if(score instanceof Integer && this.getSubject().isScoretype()){
-//                this.students.put(student, new NumberScore((Integer)score));
-//            }else if(score instanceof Boolean && !this.getSubject().isScoretype()){
-//                this.students.put(student, new BoolScore((Boolean) score));
-//            }else {
-//                throw new RuntimeException("Incorrect mark type");
-//            }
-//        }else {
-//            throw new RuntimeException("Not a student");
-//        }
+    public void addScore(Student student, T score){
+        List<T> studentScores;
+        if(!students.containsKey(student)){
+            throw new RuntimeException("Not a student");
+        }else{
+            studentScores = students.get(student);
+            studentScores.add(score);
+        }
     }
 
-    public T getStudentscore(Student student){
+    public List<T> getStudentscore(Student student){
         return this.students.get(student);
+    }
+
+    public String printStudentScore(Student student) {
+        StringBuilder str = new StringBuilder();
+        for (T i:this.getStudentscore(student)) {
+            str.append(i.toString()).append(", ");
+        }
+        return str.toString();
     }
 }

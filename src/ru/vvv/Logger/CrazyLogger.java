@@ -7,11 +7,7 @@ package ru.vvv.Logger;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.logging.SimpleFormatter;
 
 public class CrazyLogger {
     private StringBuilder sb = new StringBuilder();
@@ -20,19 +16,21 @@ public class CrazyLogger {
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
-        sb.append(dateFormat.format(date) + " - " + logItem + "\n");
+        sb.append(dateFormat.format(date)).append(" - ").append(logItem).append("\n");
     }
 
     public void printLog(){
         System.out.println(sb.toString());
     }
 
-    public void findMatches(String str){
+    public String findMatches(String str){
+        StringBuilder result = new StringBuilder();
         String[] strs = sb.toString().split("\n");
-        for (int i = 0; i < strs.length; i++) {
-            if(strs[i].contains(str)){
-                System.out.println(strs[i]);
+        for (String curr:strs) {
+            if(curr.contains(str)){
+                result.append(curr);
             }
         }
+        return result.toString();
     }
 }

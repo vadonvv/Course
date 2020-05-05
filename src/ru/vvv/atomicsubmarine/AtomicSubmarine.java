@@ -1,8 +1,7 @@
-package ru.vvv.AtomicSubmarine;
+package ru.vvv.atomicsubmarine;
 
 public class AtomicSubmarine {
     private class Engine{
-        private int power;
         public void powerItUp(){
             System.out.println("Brrrr");
         }
