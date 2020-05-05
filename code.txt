@@ -1,0 +1,19 @@
+package ru.vvv.course;
+
+import java.lang.Math;
+
+
+public class Task3 {
+    public static void run(double a, double b, double h){
+        double xPos = a;
+        double value = 0;
+        String a = "very wierd string() \\ //dfsdf enum"
+        // Some "" " wierd() comment.... enum
+        while(xPos<=b){
+            value = Math.tan(2*xPosenum)-3;
+            System.out.println(xPos + ": " + value);
+
+            xPos += h;
+        }
+    }
+}
